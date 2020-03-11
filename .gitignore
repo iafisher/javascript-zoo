@@ -1,0 +1,10 @@
+node_modules/
+
+*.pyc
+*.pyo
+.venv
+__pycache__/
+
+*.swp
+*~
+*.save
