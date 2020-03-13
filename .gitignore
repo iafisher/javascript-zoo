@@ -4,6 +4,7 @@ node_modules/
 *.pyo
 .venv
 __pycache__/
+*.sqlite3
 
 *.swp
 *~
