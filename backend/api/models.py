@@ -22,7 +22,7 @@ class Project(models.Model):
         top_level_tasks = Task.objects.filter(project=self, parent=None)
         tasks_json = [task.json() for task in top_level_tasks.order_by("order")]
         return {
-            "pk": self.pk,
+            "id": self.pk,
             "name": self.name,
             "description": self.description,
             "archived": self.archived,
@@ -72,11 +72,11 @@ class Task(models.Model):
         children = Task.objects.filter(parent=self)
         children_json = [task.json() for task in children.order_by("order")]
         return {
-            "pk": self.pk,
-            "short_description": short_description,
-            "long_description": long_description,
-            "project_pk": self.project.pk,
-            "parent_pk": self.parent.pk if self.parent else None,
+            "id": self.pk,
+            "shortDescription": self.short_description,
+            "longDescription": self.long_description,
+            "projectId": self.project.pk,
+            "parentId": self.parent.pk if self.parent else None,
             "order": self.order,
             "status": self.status,
         }
