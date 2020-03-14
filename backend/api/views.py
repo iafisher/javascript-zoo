@@ -103,6 +103,23 @@ def delete_task(request):
     return _success_response({"pk": pk})
 
 
+def get_project(request):
+    if "pk" not in request.GET:
+        return _error_response("request missing keys: pk")
+
+    try:
+        pk = int(request.GET["pk"])
+    except ValueError:
+        return _error_response("pk should have type int")
+
+    try:
+        project = Project.objects.get(pk=pk)
+    except Project.DoesNotExist:
+        return _error_response("project not found")
+
+    return _success_response(project.json())
+
+
 def create_project(request):
     try:
         payload = _get_payload(request, required_keys={"name": str, "description": str})

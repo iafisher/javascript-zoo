@@ -18,6 +18,17 @@ class Project(models.Model):
         self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    def json(self):
+        top_level_tasks = Task.objects.filter(project=self, parent=None)
+        tasks_json = [task.json() for task in top_level_tasks.order_by("order")]
+        return {
+            "pk": self.pk,
+            "name": self.name,
+            "description": self.description,
+            "archived": self.archived,
+            "tasks": tasks_json,
+        }
+
     def __str__(self):
         return self.name
 
@@ -56,6 +67,19 @@ class Task(models.Model):
     # `auto_now=True` tells Django to set this field to the current time whenever the
     # object is changed.
     last_updated = models.DateTimeField(auto_now=True)
+
+    def json(self):
+        children = Task.objects.filter(parent=self)
+        children_json = [task.json() for task in children.order_by("order")]
+        return {
+            "pk": self.pk,
+            "short_description": short_description,
+            "long_description": long_description,
+            "project_pk": self.project.pk,
+            "parent_pk": self.parent.pk if self.parent else None,
+            "order": self.order,
+            "status": self.status,
+        }
 
     def __str__(self):
         return f"[{self.project}] {self.short_description}"
