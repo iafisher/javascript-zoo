@@ -12,12 +12,8 @@
   onMount(async () => {
     const response = await fetch("http://localhost:8888/api/project/get?id=1");
     const data = await response.json();
-    id = data.id;
-    name = data.name;
-    description = data.description;
-    archived = data.archived;
     // Svelte will automatically update the UI when the tasks are assigned.
-    tasks = data.tasks;
+    ({id, name, description, archived, tasks} = data);
     loading = false;
   });
 
