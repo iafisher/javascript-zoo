@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { api } from "./api.js";
   import Task from './Task.svelte';
 
   let id;
@@ -10,7 +11,7 @@
   let tasks = [];
 
   onMount(async () => {
-    const response = await fetch("http://localhost:8888/api/project/get?id=1");
+    const response = await fetch("/api/project/get?id=1");
     const data = await response.json();
     // Svelte will automatically update the UI when the tasks are assigned.
     ({id, name, description, archived, tasks} = data);
@@ -26,16 +27,7 @@
           parentId: null,
           projectId: id,
       };
-      const options = {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      };
-      const response = await fetch("http://localhost:8888/api/task/create", options);
-      const newTask = await response.json();
+      const newTask = await api("/api/task/create", payload);
       event.target.value = "";
       if (newTask.error) {
         console.error(newTask.error);

@@ -1,4 +1,6 @@
 <script>
+  import { api } from "./api.js";
+
   const STATUS_CHOICES = ["pending", "completed"];
 
   // These are the properties of the component.
@@ -16,16 +18,7 @@
       id: id,
       status: newStatus,
     };
-    const options = {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    };
-    const response = await fetch("http://localhost:8888/api/task/update/status", options);
-    const responseJson = await response.json();
+    const responseJson = await api("/api/task/update/status", payload);
     if (responseJson.error) {
       console.error(responseJson.error)
       // TODO: Display a message to the user.
