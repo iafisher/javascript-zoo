@@ -14,6 +14,7 @@ urlpatterns = [
     ),
     path("task/update/status", views.update_task_status, name="update_task_status"),
     path("task/delete", views.delete_task, name="delete_task"),
+    path("project/get", views.get_project, name="get_project"),
     path("project/create", views.create_project, name="create_project"),
     path(
         "project/update/description",

@@ -14,3 +14,19 @@ Written by [yours truly](https://github.com/iafisher) and [Noah Kim](https://git
 
 ## The application
 The application we are implementing is a fancy to-do list / task manager that lets you nest subtasks inside of tasks in a tree structure. You can organize your tasks into projects, edit your task and project descriptions using Markdown, choose a variety of statuses for your tasks (pending, completed, blocked, non-blocking, etc.), and see a chronological log of all actions you took on a project.
+
+
+## Development
+First, start up the API server:
+
+```bash
+# One-time set-up steps
+cd backend
+virtualenv .venv
+pip3 install -r requirements.txt
+./manage.py migrate
+
+./manage.py runserver 8888
+```
+
+Then, consult the readme file for your desired frontend for details on how to use it.

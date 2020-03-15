@@ -1,9 +1,14 @@
 import json
 from django.http import JsonResponse
 
+# NOTE: Disabling CSRF protection is not a good idea for a real website, but it's the
+#       simplest option for a toy project.
+from django.views.decorators.csrf import csrf_exempt
+
 from .models import delete_task_recursively, Project, Task
 
 
+@csrf_exempt
 def create_task(request):
     try:
         payload = _get_payload(
@@ -11,21 +16,21 @@ def create_task(request):
             {
                 "description": str,
                 "order": int,
-                "parent_pk": (int, type(None)),
-                "project_pk": int,
+                "parentId": (int, type(None)),
+                "projectId": int,
             },
         )
     except ApiError as e:
         return _error_response(e.args[0])
 
     try:
-        project = Project.objects.get(pk=payload["project_pk"])
+        project = Project.objects.get(pk=payload["projectId"])
     except Project.DoesNotExist:
         return _error_response("project not found")
 
-    if payload["parent_pk"] is not None:
+    if payload["parentId"] is not None:
         try:
-            parent = Task.objects.get(pk=payload["parent_pk"])
+            parent = Task.objects.get(pk=payload["parentId"])
         except Task.DoesNotExist:
             return _error_response("parent task not found")
 
@@ -47,17 +52,18 @@ def create_task(request):
         parent=parent,
         order=order,
     )
-    return _success_response({"pk": task.pk})
+    return _success_response(task.json())
 
 
+@csrf_exempt
 def update_task_description(request):
     try:
-        payload = _get_payload(request, required_keys={"pk": int, "description": str})
+        payload = _get_payload(request, required_keys={"id": int, "description": str})
     except ApiError as e:
         return _error_response(e.args[0])
 
     try:
-        task = Task.objects.get(pk=payload["pk"])
+        task = Task.objects.get(pk=payload["id"])
     except Task.DoesNotExist:
         return _error_response("task not found")
 
@@ -65,12 +71,13 @@ def update_task_description(request):
     task.short_description = short
     task.long_description = long
     task.save()
-    return _success_response({"pk": task.pk})
+    return _success_response(task.json())
 
 
+@csrf_exempt
 def update_task_status(request):
     try:
-        payload = _get_payload(request, required_keys={"pk": int, "status": str})
+        payload = _get_payload(request, required_keys={"id": int, "status": str})
     except ApiError as e:
         return _error_response(e.args[0])
 
@@ -78,31 +85,50 @@ def update_task_status(request):
         return _error_response("unknown value for status field")
 
     try:
-        task = Task.objects.get(pk=payload["pk"])
+        task = Task.objects.get(pk=payload["id"])
     except Task.DoesNotExist:
         return _error_response("task not found")
 
     task.status = payload["status"]
     task.save()
-    return _success_response({"pk": task.pk})
+    return _success_response(task.json())
 
 
+@csrf_exempt
 def delete_task(request):
     try:
-        payload = _get_payload(request, required_keys={"pk": int})
+        payload = _get_payload(request, required_keys={"id": int})
     except ApiError as e:
         return _error_response(e.args[0])
 
-    pk = payload["pk"]
+    pk = payload["id"]
     try:
         task = Task.objects.get(pk=pk)
     except Task.DoesNotExist:
         return _error_response("task not found")
 
     delete_task_recursively(task)
-    return _success_response({"pk": pk})
+    return _success_response({"id": pk})
 
 
+def get_project(request):
+    if "id" not in request.GET:
+        return _error_response("request missing keys: id")
+
+    try:
+        pk = int(request.GET["id"])
+    except ValueError:
+        return _error_response("id should have type int")
+
+    try:
+        project = Project.objects.get(pk=pk)
+    except Project.DoesNotExist:
+        return _error_response("project not found")
+
+    return _success_response(project.json())
+
+
+@csrf_exempt
 def create_project(request):
     try:
         payload = _get_payload(request, required_keys={"name": str, "description": str})
@@ -112,39 +138,41 @@ def create_project(request):
     project = Project.objects.create(
         name=payload["name"], description=payload["description"]
     )
-    return _success_response({"pk": project.pk})
+    return _success_response(project.json())
 
 
+@csrf_exempt
 def update_project_description(request):
     try:
-        payload = _get_payload(request, required_keys={"pk": int, "description": str})
+        payload = _get_payload(request, required_keys={"id": int, "description": str})
     except ApiError as e:
         return _error_response(e.args[0])
 
     try:
-        project = Project.objects.get(pk=payload["pk"])
+        project = Project.objects.get(pk=payload["id"])
     except Project.DoesNotExist:
         return _error_response("project not found")
 
     project.description = payload["description"]
     project.save()
-    return _success_response({"pk": project.pk})
+    return _success_response(project.json())
 
 
+@csrf_exempt
 def delete_project(request):
     try:
-        payload = _get_payload(request, required_keys={"pk": int})
+        payload = _get_payload(request, required_keys={"id": int})
     except ApiError as e:
         return _error_response(e.args[0])
 
-    pk = payload["pk"]
+    pk = payload["id"]
     try:
         project = Project.objects.get(pk=pk)
     except Project.DoesNotExist:
         return _error_response("project not found")
 
     project.delete()
-    return _success_response({"pk": pk})
+    return _success_response({"id": pk})
 
 
 def _success_response(jsonobj=None):
