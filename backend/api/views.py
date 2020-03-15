@@ -1,14 +1,9 @@
 import json
 from django.http import JsonResponse
 
-# NOTE: Disabling CSRF protection is not a good idea for a real website, but it's the
-#       simplest option for a toy project.
-from django.views.decorators.csrf import csrf_exempt
-
 from .models import delete_task_recursively, Project, Task
 
 
-@csrf_exempt
 def create_task(request):
     try:
         payload = _get_payload(
@@ -55,7 +50,6 @@ def create_task(request):
     return _success_response(task.json())
 
 
-@csrf_exempt
 def update_task_description(request):
     try:
         payload = _get_payload(request, required_keys={"id": int, "description": str})
@@ -74,7 +68,6 @@ def update_task_description(request):
     return _success_response(task.json())
 
 
-@csrf_exempt
 def update_task_status(request):
     try:
         payload = _get_payload(request, required_keys={"id": int, "status": str})
@@ -94,7 +87,6 @@ def update_task_status(request):
     return _success_response(task.json())
 
 
-@csrf_exempt
 def delete_task(request):
     try:
         payload = _get_payload(request, required_keys={"id": int})
@@ -128,7 +120,6 @@ def get_project(request):
     return _success_response(project.json())
 
 
-@csrf_exempt
 def create_project(request):
     try:
         payload = _get_payload(request, required_keys={"name": str, "description": str})
@@ -141,7 +132,6 @@ def create_project(request):
     return _success_response(project.json())
 
 
-@csrf_exempt
 def update_project_description(request):
     try:
         payload = _get_payload(request, required_keys={"id": int, "description": str})
@@ -158,7 +148,6 @@ def update_project_description(request):
     return _success_response(project.json())
 
 
-@csrf_exempt
 def delete_project(request):
     try:
         payload = _get_payload(request, required_keys={"id": int})
