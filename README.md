@@ -17,7 +17,7 @@ The application we are implementing is a fancy to-do list / task manager that le
 
 
 ## Development
-First, start up the API server:
+First, run these one-time set-up steps:
 
 ```bash
 # One-time set-up steps
@@ -25,8 +25,12 @@ cd backend
 virtualenv .venv
 pip3 install -r requirements.txt
 ./manage.py migrate
-
-./manage.py runserver 8888
 ```
 
-Then, consult the readme file for your desired frontend for details on how to use it.
+Then, start up the API server:
+
+```bash
+./manage.py runserver
+```
+
+You can now visit the site in your browser at http://localhost:8000.
