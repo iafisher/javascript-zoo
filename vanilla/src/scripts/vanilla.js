@@ -41,41 +41,24 @@ async function api(url, payload) {
     return await response.json();
 }
 
-
-// Create task input area
-function generateCreateTaskNode() {
-    const createTaskNode = document.createElement('div');
-    createTaskNode.className = "new-task-form"
-
-    const createTaskLabel = generateCreateTaskLabel();
-    const createTaskInput = getCreateTaskInput();
-
-    createTaskNode.appendChild(createTaskLabel);
-    createTaskNode.appendChild(createTaskInput);
-
-    return createTaskNode
-}
-
 function handleNewTaskInput(event) {
     if (event.keyCode === ENTER_KEY_CODE) {
         event.preventDefault();
         const description = event.target.value
-        createNewTask(description)
+        createTask(description)
         newTaskInput = document.getElementById("new-task-input")
         newTaskInput.value = ""
     }
 }
 
-
-// Task
 function generateTask(task) {
     const { shortDescription, longDescription, id, status } = task;
-    const taskDiv = document.createElement("DIV");
+    const taskDiv = document.createElement("div");
     taskDiv.className = "status-" + status;
     taskDiv.id = id;
 
-    const taskHeader = document.createElement("H2");
-    taskHeader.innerHTML = status == "pending" ? shortDescription : "<s>" + shortDescription + "</s>";
+    const taskHeader = document.createElement("h2");
+    taskHeader.innerHTML = status === "pending" ? shortDescription : "<s>" + shortDescription + "</s>";
     taskHeader.id = id + "-header";
     taskDiv.appendChild(taskHeader);
 
@@ -86,9 +69,9 @@ function generateTask(task) {
 }
 
 function generateTaskStatusDropdown(id, status) {
-    const taskStatusDropdown = document.createElement("SELECT");
+    const taskStatusDropdown = document.createElement("select");
     statuses.forEach(status => {
-        const opt = document.createElement("OPTION");
+        const opt = document.createElement("option");
         opt.innerText = status;
         taskStatusDropdown.appendChild(opt);
     })
@@ -128,7 +111,7 @@ function generateTasksList(tasks) {
     return tasksListDiv
 }
 
-async function createNewTask(description) {
+async function createTask(description) {
     const payload = {
         description: description,
         order: state.tasks.length,
