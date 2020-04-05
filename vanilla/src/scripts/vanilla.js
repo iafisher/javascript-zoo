@@ -1,4 +1,6 @@
 const ENTER_KEY_CODE = 13;
+const statuses = ["pending", "completed"]
+
 let state = {
     id: 0,
     name: "",
@@ -84,7 +86,6 @@ function generateTask(task) {
 }
 
 function generateTaskStatusDropdown(id, status) {
-    const statuses = ["pending", "completed"]
     const taskStatusDropdown = document.createElement("SELECT");
     statuses.forEach(status => {
         const opt = document.createElement("OPTION");
@@ -115,14 +116,12 @@ async function handleStatusChange(event, id) {
     task.className = "status-" + status;
     const taskHeader = document.getElementById(id + "-header");
 
-    taskHeader.innerHTML = status == "pending" ? taskHeader.innerText : "<s>" + taskHeader.innerText + "</s>";
+    taskHeader.innerHTML = status === "pending" ? taskHeader.innerText : "<s>" + taskHeader.innerText + "</s>";
 }
 
-
-// Tasks list
 function generateTasksList(tasks) {
     const tasksListDiv = document.getElementById("tasks-list")
-    tasks.map(task => {
+    tasks.forEach(task => {
         const generatedTask = generateTask(task);
         tasksListDiv.appendChild(generatedTask);
     })

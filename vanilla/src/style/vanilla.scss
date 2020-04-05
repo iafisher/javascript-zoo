@@ -41,29 +41,24 @@ div + div {
     opacity: 50%;
 }
 
-  label, input {
-    display: inline-block;
-  }
+label, input {
+  display: inline-block;
+}
 
-  main {
-    width: 62rem;
-    margin: 0 auto;
-  }
+label {
+  margin-right: 5px;
+}
 
-  label {
-    margin-right: 5px;
-  }
+.new-task-form {
+  text-align: center;
+}
 
-  .new-task-form {
-    text-align: center;
-  }
+.message {
+  font-size: 24px;
+  text-align: center;
+}
 
-  .message {
-    font-size: 24px;
-    text-align: center;
-  }
-
-  .main {
-    width: 62rem;
-    margin: 0 auto;
-  }
+.main {
+  width: 62rem;
+  margin: 0 auto;
+}

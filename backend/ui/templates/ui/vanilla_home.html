@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{% static 'ui/global.css' %}">
     <link rel="stylesheet" href="{% static style %}">
     <script defer src="{% static script %}"></script>
+</head>
+
+<body>
     <div class="main">
         <div class="new-task-form">
             <label>Create a new task: </label>
@@ -17,11 +20,6 @@
 
         </div>
     </div>
-
-
-</head>
-
-<body>
 </body>
 
 {% csrf_token %}

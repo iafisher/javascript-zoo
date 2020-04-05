@@ -1,4 +1,4 @@
-The Vanilla JS implementation of the application.
+The vanilla JS implementation of the application.
 
 In order to run it, first you need to build the JavaScript and CSS:
 
