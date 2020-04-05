@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{% static 'ui/global.css' %}">
+    <link rel="stylesheet" href="{% static style %}">
+    <script defer src="{% static script %}"></script>
+</head>
+
+<body>
+    <div class="main">
+        <div class="new-task-form">
+            <label>Create a new task: </label>
+            <input id="new-task-input" onkeyup="handleNewTaskInput(event)">
+        </div>
+
+        <div class="tasks-list" id="tasks-list">
+
+        </div>
+    </div>
+</body>
+
+{% csrf_token %}
+
+</html>
