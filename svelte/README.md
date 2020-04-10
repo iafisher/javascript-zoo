@@ -1,20 +1,11 @@
 The [Svelte](https://svelte.dev/) implementation of the application.
 
-In order to run it, first you need to build the JavaScript and CSS:
-
 ```bash
-# One-time set-up step
+# Run this once, when you clone the repository.
 npm install
 
+# Run this every time.
 npm run build
 ```
 
-Then, start the backend server:
-
-```bash
-cd ../backend
-virtualenv .venv
-./manage.py runserver
-```
-
-Visit http://localhost:8000/svelte in your browser to see the application.
+Now, you can visit http://localhost:3000/svelte in your browser to see the application. Make sure you've followed the steps in the project README to start up the backend server.

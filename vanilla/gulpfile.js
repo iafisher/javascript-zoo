@@ -1,5 +1,5 @@
-// This file automates the move of js and CSS files into a location that can
-// be used by Django. 
+// This file moves our compiled JS and CSS assets to the backend where they
+// can be served by Express.
 
 'use strict';
 
@@ -22,14 +22,14 @@ gulp.task('scripts', buildJS);
 function buildJS() {
     return pipeline(
         gulp.src('./src/scripts/*.js'),
-        gulp.dest('../backend/ui/static/ui')
+        gulp.dest('../backend/public/js')
     );
 }
 
 function watchdev() {
     return pipeline(
         gulp.src('./src/scripts/*.js'),
-        gulp.dest('../backend/ui/static/ui/vanilla/js')
+        gulp.dest('../backend/public/js')
     );
 }
 
@@ -37,7 +37,7 @@ gulp.task('styles', function () {
     return pipeline(
         gulp.src('./src/style/*.scss'),
         sass().on('error', sass.logError),
-        gulp.dest('../backend/ui/static/ui')
+        gulp.dest('../backend/public/css')
     )
 });
 

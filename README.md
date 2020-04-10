@@ -17,20 +17,21 @@ The application we are implementing is a fancy to-do list / task manager that le
 
 
 ## Development
-First, run these one-time set-up steps:
+If you've just cloned the repository, you'll need to run these one-time set-up steps:
 
 ```bash
 # One-time set-up steps
 cd backend
-virtualenv .venv
-pip3 install -r requirements.txt
-./manage.py migrate
+npm install
+node_modules/.bin/sequelize db:migrate
+node_modules/.bin/sequelize db:seed:all
 ```
 
-Then, start up the API server:
+Start up the API server with:
 
 ```bash
-./manage.py runserver
+cd backend
+nodemon
 ```
 
-You can now visit the site in your browser at http://localhost:8000.
+You can now visit the site in your browser at http://localhost:3000.
