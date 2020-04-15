@@ -1,4 +1,8 @@
 node_modules/
+/backend-old
+/backend/public/js/*
+/backend/public/css/*
+!/backend/public/css/global.css
 
 *.pyc
 *.pyo
